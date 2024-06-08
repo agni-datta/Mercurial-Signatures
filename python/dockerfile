@@ -3,13 +3,15 @@ LABEL maintainer="burkh4rt"
 
 WORKDIR /usr/src/
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends git \
-    && git clone https://github.com/burkh4rt/miracl-core.git \
-    && git -C miracl-core checkout -b dev-python-autoconfiguration -fq a1c831f \
-    && cp ./miracl-core/python/* . \
-    && rm -rf ./miracl-core/ \
-    && python3 auto_config.py 8
+RUN apt-get update &&
+    RUN apt-get update && apt-get install -y --no-install-recommends git &&
+    RUN git clone https://github.com/burkh4rt/miracl-core.git &&
+    RUN cd miracl-core &&
+    RUN git checkout -b dev-python-autoconfiguration -fq a1c831f &&
+    RUN cd .. &&
+    RUN cp ./miracl-core/python/* . &&
+    RUN rm -rf ./miracl-core/ &&
+    RUN python auto_config.py 8
 
 COPY . .
 
